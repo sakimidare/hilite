@@ -1,5 +1,7 @@
 # hilite
 
+[简体中文](/docs/README_zh-CN.md) / [English](/README.md)
+
 hilite is a fast, rule-based CLI highlighter for stdin and files, written in Rust.
 
 It reads text line by line and highlights matches using ANSI colors, making it suitable
@@ -79,7 +81,7 @@ rules:
 Each rule has the following fields:
 
 - `keyword`
-  The keyword or regukar expression to match.
+  The keyword or regular expression to match.
 
 - `is_regex` (optional, default: `false`)
   Whether `keyword` should be treated as a regular expression.
