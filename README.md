@@ -7,8 +7,6 @@ highlite is a fast, rule-based CLI highlighter for stdin and files, written in R
 It reads text line by line and highlights matches using ANSI colors, making it suitable
 for large files, streaming input, and Unix-style pipelines.
 
----
-
 ## Features
 
 - High performance: all rules are compiled into a single regex at startup
@@ -18,8 +16,11 @@ for large files, streaming input, and Unix-style pipelines.
 - Designed for streaming input (stdin, pipes, large files)
 - Minimal memory allocation during processing
 - Per-rule and global case-insensitive matching
+- Built-in presets for common formats (logs, JSON...)
+- Real-time log following:
+  - `--follow-journal` to follow system logs
+  - `--follow-file <FILE>` to follow a file like `tail -f`
 
----
 
 ## Installation
 
@@ -39,6 +40,19 @@ cargo build --release
 
 ## Usage
 
+CLi Options:
+
+| Option                  | Description                                   |
+|-------------------------|-----------------------------------------------|
+| `-i, --ignore-case`     | Force all rules to match case-insensitively   |
+| `-f, --file <FILE>`     | Input file (defaults to stdin)                |
+| `-c, --config <CONFIG>` | Path to YAML config file (optional)           |
+| `-p, --preset <PRESET>` | Use a built-in preset (`logs`, `cpp`, `json`) |
+| `--follow-journal`      | Follow system journal logs (`journalctl -f`)  |
+| `--follow-file <FILE>`  | Follow a file like `tail -f`                  |
+| `-h, --help`            | Show help message                             |
+
+
 Highlight stdin:
 
 ```bash
@@ -57,7 +71,41 @@ Force case-insensitive matching for all rules:
 highlite --config examples/rules/cpp_rules.yaml --ignore-case < examples/logs/example_cpp.cpp
 ```
 
+Use a built-in preset
+
+```bash
+highlite --preset logs --file examples/logs/example_log.log
+```
+Follow system journal in real-time
+
+```bash
+highlite --preset logs --follow-journal
+```
+
+Follow a specific file in real-time (like tail -f)
+```bash
+highlite --preset cpp --follow-file examples/logs/example_cpp.cpp
+```
+
+**NOTE:**
+`--follow-...` has a higher priority than `--file`.
+
 If stdin is a TTY, highlite will wait for input until EOF is received.
+
+
+### Built-in presets
+
+Instead of providing a YAML configuration file, you can use one of the built-in presets:
+
+- `logs` – common log highlighting
+- `cpp` – C++ syntax highlighting
+- `json` – JSON highlighting
+
+Example:
+
+```bash
+highlite --preset cpp --file examples/logs/example_cpp.cpp
+```
 
 ## Configuration
 The configuration file is written in YAML.
@@ -127,10 +175,11 @@ color: { type: Magenta }
 color: { r: 106, g: 153, b: 85 }
 ```
 
-### Examples
 
-See `examples/rules`.
+### Config Examples
 
+See `examples/logs` for log highlighting examples.
+See `examples/rules` for YAML configuration examples.
 
 ## Design
 

@@ -6,13 +6,17 @@ highlite 是一个用 Rust 编写的高性能、基于规则的命令行（CLI�
 
 ## 特性
 
-- **高性能**：启动时将所有规则编译为单个正则表达式。
-- **基于规则的高亮**：支持关键字或正则表达式匹配。
-- **丰富的色彩支持**：支持预设 ANSI 颜色和 24 位 RGB 真彩色。
-- **YAML 配置**：支持可选的递归包含（include）功能。
-- **专为流式设计**：适用于标准输入、管道和大文件。
-- **内存优化**：在处理过程中尽量减少内存分配。
-- **大小写控制**：支持按规则或全局忽略大小写匹配。
+- 高性能：启动时将所有规则编译为单个正则表达式。
+- 基于规则的高亮：支持关键字或正则表达式匹配。
+- 丰富的色彩支持：支持预设 ANSI 颜色和 24 位 RGB 真彩色。
+- YAML 配置：支持可选的递归包含（include）功能。
+- 专为流式设计：适用于标准输入、管道和大文件。
+- 内存优化：在处理过程中尽量减少内存分配。
+- 大小写控制：支持按规则或全局忽略大小写匹配。
+- 内置预设：支持常用日志、C++、JSON 高亮规则。
+- 实时日志跟随：
+  --follow-journal 跟随系统日志（journalctl -f）  
+  --follow-file <FILE> 跟随指定文件（类似 tail -f）
 
 
 ## 安装
@@ -30,6 +34,16 @@ cargo build --release
 ```
 
 ## 使用方法
+| 参数                      | 描述                                     |
+|-------------------------|----------------------------------------|
+| `-i, --ignore-case`     | 强制所有规则忽略大小写（覆盖配置文件中的 `ignore_case` 设置） |
+| `-f, --file <FILE>`     | 指定输入文件（默认读取 stdin）                     |
+| `-c, --config <CONFIG>` | YAML 配置文件路径（可选）                        |
+| `-p, --preset <PRESET>` | 使用内置预设（可选，支持 `logs`、`cpp`、`json`）      |
+| `--follow-journal`      | 实时跟随系统日志（journalctl -f）                |
+| `--follow-file <FILE>`  | 实时跟随指定日志文件（类似 tail -f）                 |
+| `-h, --help`            | 显示帮助信息                                 |
+
 
 高亮显示标准输入：
 ```bash
@@ -47,7 +61,35 @@ highlite --config examples/rules/log_rules.yaml --file examples/logs/example_log
 highlite --config examples/rules/cpp_rules.yaml --ignore-case < examples/logs/example_cpp.cpp
 ```
 
+实时跟随系统日志：
+```bash
+highlite --preset logs --file examples/logs/example_log.log
+```
+
+实时跟随指定文件（类似`tail -f`）：
+```bash
+highlite --preset logs --follow-journal
+```
+
+**注意：**
+`--follow-...`的优先级比`--file`高。
+
 如果标准输入是一个终端（TTY），highlite 会持续等待输入直到接收到 EOF（文件结束符）。
+
+
+### 内置预设
+
+你可以使用以下预设来代替传入配置文件路径：
+
+- `logs` – 普通日志高亮
+- `cpp` – C++ 语法高亮
+- `json` – JSON 语法高亮
+
+例如:
+
+```bash
+highlite --preset cpp --file examples/logs/example_cpp.cpp
+```
 
 ## 配置
 配置文件使用 YAML 格式。
@@ -113,6 +155,7 @@ color: { r: 106, g: 153, b: 85 }
 - 大小写敏感性在规则级别通过正则内联标志进行控制。
 - 每一行文本仅需经过一次扫描即可完成高亮。
 - 重用输出缓冲区以最小化内存分配。
+- 简单实现，高性能
 
 ## 局限性
 - 不支持嵌套高亮（例如：字符串内部的注释）。

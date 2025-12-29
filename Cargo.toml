@@ -1,6 +1,6 @@
 [package]
 name = "highlite"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2024"
 description = "A fast, rule-based CLI highlighter for stdin and files."
 license = "GPL-3.0-only"
@@ -11,4 +11,5 @@ regex = "1.12.2"
 serde = { version = "1.0.228", features = ["derive"] }
 anyhow = "1.0.100"
 serde_yml = "0.0.12"
+once_cell = "1.21.3"
 
