@@ -1,6 +1,6 @@
 use clap::Parser;
-use hilite::arg_parser::CliArgs;
-use hilite::run;
+use highlite::arg_parser::CliArgs;
+use highlite::run;
 
 fn main() -> anyhow::Result<()> {
     let cli = CliArgs::parse();

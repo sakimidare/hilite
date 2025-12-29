@@ -1,8 +1,8 @@
-# hilite
+# highlite
 
 [简体中文](/docs/README_zh-CN.md) / [English](/README.md)
 
-hilite is a fast, rule-based CLI highlighter for stdin and files, written in Rust.
+highlite is a fast, rule-based CLI highlighter for stdin and files, written in Rust.
 
 It reads text line by line and highlights matches using ANSI colors, making it suitable
 for large files, streaming input, and Unix-style pipelines.
@@ -25,14 +25,14 @@ for large files, streaming input, and Unix-style pipelines.
 ### From crates.io
 
 ```bash
-cargo install hilite
+cargo install highlite
 ```
 
 ### From source
 
 ```bash
-git clone https://github.com/sakimidare/hilite.git
-cd hilite
+git clone https://github.com/sakimidare/highlite.git
+cd highlite
 cargo build --release
 ```
 
@@ -41,22 +41,22 @@ cargo build --release
 Highlight stdin:
 
 ```bash
-cat example.c | hilite --config rules.yaml
+cat example.c | highlite --config rules.yaml
 ```
 
 Highlight a file:
 
 ```bash
-hilite --config rules.yaml --file example.c
+highlite --config rules.yaml --file example.c
 ```
 
 Ignore case:
 
 ```bash
-hilite --config rules.yaml --ignore-case < input.txt
+highlite --config rules.yaml --ignore-case < input.txt
 ```
 
-If stdin is a TTY, hilite will wait for input until EOF is received.
+If stdin is a TTY, highlite will wait for input until EOF is received.
 
 ## Configuration
 The configuration file is written in YAML.

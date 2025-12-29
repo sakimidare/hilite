@@ -1,6 +1,6 @@
-//! `hilite` — A configurable syntax-highlighting filter for terminal output.
+//! `highlite` — A configurable syntax-highlighting filter for terminal output.
 //!
-//! `hilite` reads text from a file or standard input and highlights matching
+//! `highlite` reads text from a file or standard input and highlights matching
 //! keywords or regular expressions according to a user-provided YAML
 //! configuration file.
 //!
@@ -14,9 +14,9 @@
 //! ## Example
 //!
 //! ```bash
-//! hilite --config rules.yaml --file file.txt
+//! highlite --config rules.yaml --file file.txt
 //!
-//! cat file.txt | hilite --config rules.yaml
+//! cat file.txt | highlite --config rules.yaml
 //! ```
 
 use anyhow::Context;
@@ -139,7 +139,7 @@ pub mod arg_parser {
     /// # Examples
     ///
     /// ```no_run
-    /// use hilite::arg_parser::CliArgs;
+    /// use highlite::arg_parser::CliArgs;
     ///
     /// let args = CliArgs {
     ///     ignore_case: true,
@@ -148,7 +148,7 @@ pub mod arg_parser {
     /// };
     /// ```
     #[derive(Debug, Parser)]
-    #[command(name = "hilite", about = "Highlight lines from stdin or a file")]
+    #[command(name = "highlite", about = "Highlight lines from stdin or a file")]
     pub struct CliArgs {
         /// Perform case-insensitive matching.
         #[arg(short, long)]
@@ -188,7 +188,7 @@ pub mod arg_parser {
     /// # Examples
     ///
     /// ```no_run
-    /// use hilite::arg_parser::load_rules_from_file;
+    /// use highlite::arg_parser::load_rules_from_file;
     ///
     /// let rules = load_rules_from_file("rules.yaml").unwrap();
     /// println!("Loaded {} rules", rules.len());
@@ -264,8 +264,8 @@ pub mod arg_parser {
 /// # Examples
 ///
 /// ```rust
-/// use hilite::highlight::HighlightingEngine;
-/// use hilite::rules::{Rule, Color, PresetColor};
+/// use highlite::highlight::HighlightingEngine;
+/// use highlite::rules::{Rule, Color, PresetColor};
 ///
 /// let rules = vec![
 ///     Rule {
@@ -337,8 +337,8 @@ pub mod highlight {
         /// # Examples
         ///
         /// ```rust
-        /// # use hilite::highlight::HighlightingEngine;
-        /// # use hilite::rules::{Rule, Color, PresetColor};
+        /// # use highlite::highlight::HighlightingEngine;
+        /// # use highlite::rules::{Rule, Color, PresetColor};
         /// let rules = vec![Rule {
         ///     keyword: "OK".into(),
         ///     color: Color::Preset(PresetColor::Green),
@@ -407,7 +407,7 @@ pub mod highlight {
 /// # Examples
 ///
 /// ```no_run
-/// use hilite::{run, arg_parser::CliArgs};
+/// use highlite::{run, arg_parser::CliArgs};
 ///
 /// let cli_args = CliArgs {
 ///     ignore_case: false,

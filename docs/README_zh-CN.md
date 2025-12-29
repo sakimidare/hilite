@@ -1,6 +1,6 @@
-# hilite
+# highlite
 
-hilite 是一个用 Rust 编写的高性能、基于规则的命令行（CLI）文本着色工具，支持标准输入（stdin）和文件。
+highlite 是一个用 Rust 编写的高性能、基于规则的命令行（CLI）文本着色工具，支持标准输入（stdin）和文件。
 
 它采用逐行读取的方式，并使用 ANSI 转义码对匹配内容进行高亮显示，非常适合处理大文件、流式输入以及 Unix 风格的管道操作。
 
@@ -17,13 +17,13 @@ hilite 是一个用 Rust 编写的高性能、基于规则的命令行（CLI）�
 
 ### 通过 crates.io 安装
 ```bash
-cargo install hilite
+cargo install highlite
 ```
 
 ### 从源码安装
 ```bash
-git clone https://github.com/sakimidare/hilite.git
-cd hilite
+git clone https://github.com/sakimidare/highlite.git
+cd highlite
 cargo build --release
 ```
 
@@ -31,21 +31,21 @@ cargo build --release
 
 高亮显示标准输入：
 ```bash
-cat example.c | hilite --config rules.yaml
+cat example.c | highlite --config rules.yaml
 ```
 
 
 高亮显示文件：
 ```bash
-hilite --config rules.yaml --file example.c
+highlite --config rules.yaml --file example.c
 ```
 
 忽略大小写：
 ```bash
-hilite --config rules.yaml --ignore-case < input.txt
+highlite --config rules.yaml --ignore-case < input.txt
 ```
 
-如果标准输入是一个终端（TTY），hilite 会持续等待输入直到接收到 EOF（文件结束符）。
+如果标准输入是一个终端（TTY），highlite 会持续等待输入直到接收到 EOF（文件结束符）。
 
 ## 配置
 配置文件使用 YAML 格式。

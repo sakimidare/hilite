@@ -1,5 +1,5 @@
 [package]
-name = "hilite"
+name = "highlite"
 version = "0.1.0"
 edition = "2024"
 description = "A fast, rule-based CLI highlighter for stdin and files."
