@@ -1,72 +1,122 @@
 rules:
-  # ===== Log levels =====
-  - keyword: '\b(FATAL|CRITICAL)\b'
-    is_regex: true
-    ignore_case: true
-    color: { r: 255, g: 0, b: 0 }      # Bright red
-
-  - keyword: '\bERROR\b'
-    is_regex: true
-    ignore_case: true
-    color: { type: Red }
-
-  - keyword: '\bWARN(ING)?\b'
-    is_regex: true
-    ignore_case: true
-    color: { type: Yellow }
-
-  - keyword: '\bINFO\b'
-    is_regex: true
-    ignore_case: true
-    color: { type: Green }
-
-  - keyword: '\bDEBUG\b'
-    is_regex: true
-    ignore_case: true
-    color: { type: Cyan }
-
-  - keyword: '\bTRACE\b'
-    is_regex: true
-    ignore_case: true
-    color: { r: 160, g: 160, b: 160 }  # Gray
-
-  # ===== Timestamps =====
+  # 1. ===== Timestamps =====
+  # 优先级最高，防止日期中的数字和横杠被后续规则（如 Numbers）拆散
   - keyword: '\b\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(\.\d+)?\b'
     is_regex: true
     color: { r: 180, g: 180, b: 180 }
 
-  # ===== Thread / PID =====
-  - keyword: '\[(main|worker-\d+|thread-\d+)\]'
+  # 2. ===== IP Addresses =====
+  # 必须在普通数字之前，否则 IP 会被识别为 4 个独立数字
+  - keyword: '\b\d{1,3}(\.\d{1,3}){3}\b'   # IPv4
     is_regex: true
-    ignore_case: true
-    color: { r: 140, g: 140, b: 255 }
-
-  - keyword: '\bpid=\d+\b'
+    color: { r: 255, g: 165, b: 0 }
+  - keyword: '\b([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}\b'  # IPv6
     is_regex: true
-    color: { r: 140, g: 140, b: 255 }
+    color: { r: 255, g: 165, b: 0 }
 
-  # ===== Source / Module =====
-  - keyword: '\b([A-Za-z_][\w$]*\.)+[A-Za-z_][\w$]*\b'
+  # 3. ===== URLs / Domains =====
+  - keyword: 'https?://[^\s/$.?#].[^\s]*'
     is_regex: true
-    color: { r: 86, g: 156, b: 214 }   # Blue (class / module)
+    color: { r: 80, g: 200, b: 250 }
+  - keyword: '\b([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b'
+    is_regex: true
+    color: { r: 100, g: 150, b: 200 }
 
-  # ===== Common fields =====
+  # 4. ===== JSON keys =====
+  # 带有冒号的键，优先级高于普通引号字符串
+  - keyword: '"[^"]+"\s*:'
+    is_regex: true
+    color: { r: 200, g: 100, b: 200 }
+
+  # 5. ===== Common fields (key=value) =====
   - keyword: '\b(user|uid|id|request_id|trace_id|span_id)=\S+\b'
     is_regex: true
     ignore_case: true
     color: { r: 206, g: 145, b: 120 }
 
-  # ===== Numbers =====
-  - keyword: '\b\d+(\.\d+)?\b'
+  # 6. ===== Source / Module =====
+  - keyword: '\b([A-Za-z_][\w$]*\.)+[A-Za-z_][\w$]*\b'
     is_regex: true
-    color: { r: 181, g: 206, b: 168 }
+    color: { r: 86, g: 156, b: 214 }
 
-  # ===== File paths =====
+  # 7. ===== File paths =====
   - keyword: '(/[^ \t\n]+)+'
     is_regex: true
     color: { r: 152, g: 195, b: 121 }
 
-  # ===== Quoted strings =====
+  # 8. ===== Log levels (包含简写适配) =====
+  - keyword: '\b(FATAL|CRITICAL|FF)\b'
+    is_regex: true
+    ignore_case: true
+    color: { r: 255, g: 0, b: 0 }
+
+  - keyword: '\b(ERROR|EE)\b'
+    is_regex: true
+    ignore_case: true
+    color: { type: Red }
+
+  - keyword: '\b(WARN(ING)?|WW)\b'
+    is_regex: true
+    ignore_case: true
+    color: { type: Yellow }
+
+  - keyword: '\b(INFO|II)\b'
+    is_regex: true
+    ignore_case: true
+    color: { type: Green }
+
+  - keyword: '\b(DEBUG|DD)\b'
+    is_regex: true
+    ignore_case: true
+    color: { type: Cyan }
+
+  - keyword: '\b(TRACE|VV)\b'
+    is_regex: true
+    ignore_case: true
+    color: { r: 160, g: 160, b: 160 }
+
+  # 9. ===== HTTP Methods / Status =====
+  - keyword: '\b(GET|POST|PUT|DELETE|PATCH|OPTIONS|HEAD)\b'
+    is_regex: true
+    color: { r: 0, g: 200, b: 0 }
+  - keyword: '\b(1\d{2}|2\d{2}|3\d{2}|4\d{2}|5\d{2})\b'
+    is_regex: true
+    color: { r: 255, g: 140, b: 0 }
+
+  # 10. ===== Thread / PID =====
+  - keyword: '\[(main|worker-\d+|thread-\d+)\]'
+    is_regex: true
+    ignore_case: true
+    color: { r: 140, g: 140, b: 255 }
+  - keyword: '\bpid=\d+\b'
+    is_regex: true
+    color: { r: 140, g: 140, b: 255 }
+
+  # 11. ===== Exceptions / Stacktrace =====
+  - keyword: '\b(Exception|Error|Traceback)\b'
+    is_regex: true
+    color: { r: 255, g: 50, b: 50 }
+  - keyword: '^\s+at\s+[^\s]+\([^\)]*\)'
+    is_regex: true
+    color: { r: 180, g: 180, b: 255 }
+
+  # 12. ===== SQL / Shell commands =====
+  - keyword: '\b(SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|JOIN|CREATE|DROP|ALTER)\b'
+    is_regex: true
+    ignore_case: true
+    color: { r: 0, g: 255, b: 200 }
+  - keyword: '(\$[a-zA-Z_][\w]*)'
+    is_regex: true
+    color: { r: 255, g: 200, b: 100 }
+
+  # 13. ===== Numbers =====
+  # 放在底部作为保底，不匹配已经被 IP 或时间戳占用的数字
+  - keyword: '\b\d+(\.\d+)?\b'
+    is_regex: true
+    color: { r: 181, g: 206, b: 168 }
+
+  # 14. ===== Quoted strings =====
+  # 最后匹配，防止它把 JSON key 整体吞掉
   - keyword: '"([^"\\]|\\.)*"'
     is_regex: true
     color: { r: 214, g: 157, b: 133 }

@@ -52,12 +52,12 @@ pub struct CliArgs {
 /// A configuration file may include additional configuration files
 /// and/or define a list of highlighting rules.
 #[derive(Debug, Deserialize)]
-pub struct FileConfig {
+pub(crate) struct FileConfig {
     /// Paths to other configuration files to include.
-    pub include: Option<Vec<String>>,
+    pub(crate) include: Option<Vec<String>>,
 
     /// Highlighting rules defined in this file.
-    pub rules: Option<Vec<Rule>>,
+    pub(crate) rules: Option<Vec<Rule>>,
 }
 
 /// Loads highlighting rules from a YAML configuration file.

@@ -7,7 +7,7 @@ use anyhow::Result;
 
 /// 获取指定名称的预设规则
 pub fn get_preset(name: &str) -> Result<Vec<Rule>> {
-    match name {
+    match name.to_ascii_lowercase().as_str() {
         "logs" => Ok(logs::LOGS.to_vec()),
         "json" => Ok(json::JSON.to_vec()),
         "cpp" => Ok(cpp::CPP.to_vec()),

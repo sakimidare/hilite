@@ -1,3 +1,65 @@
+macro_rules! define_preset_colors {
+    (
+        $(
+            $Name:ident => {
+                ansi: $ansi:expr,
+                aliases: [$($alias:expr),+ $(,)?]
+            }
+        ),+ $(,)?
+    ) => {
+        #[derive(Debug, Copy, Clone)]
+        pub(crate) enum PresetColor {
+            $($Name),+
+        }
+
+        impl PresetColor {
+            pub(crate) fn to_ansi(self) -> &'static str {
+                match self {
+                    $(PresetColor::$Name => $ansi),+
+                }
+            }
+
+            pub(crate) fn parse(name: &str) -> anyhow::Result<Self> {
+                let name = name.to_ascii_lowercase();
+                match name.as_str() {
+                    $(
+                        $($alias)|+ => Ok(PresetColor::$Name),
+                    )+
+                    _ => anyhow::bail!("Unknown preset color: {}", name),
+                }
+            }
+        }
+    };
+}
+
+define_preset_colors! {
+    Red => {
+        ansi: "\x1b[31m",
+        aliases: ["red"]
+    },
+    Yellow => {
+        ansi: "\x1b[33m",
+        aliases: ["yellow", "yel"]
+    },
+    Blue => {
+        ansi: "\x1b[34m",
+        aliases: ["blue"]
+    },
+    Green => {
+        ansi: "\x1b[32m",
+        aliases: ["green"]
+    },
+    Cyan => {
+        ansi: "\x1b[36m",
+        aliases: ["cyan"]
+    },
+    Magenta => {
+        ansi: "\x1b[35m",
+        aliases: ["magenta", "purple"]
+    },
+}
+
+
 use serde::Deserialize;
 
 /// A single highlighting rule.
@@ -40,19 +102,6 @@ pub struct Rule {
     pub ignore_case: bool,
 }
 
-/// A predefined ANSI color.
-///
-/// These colors correspond to standard 8-color ANSI escape sequences.
-#[derive(Debug, Copy, Clone, Deserialize)]
-#[serde(tag = "type", rename_all = "PascalCase", content = "value")]
-pub enum PresetColor {
-    Red,
-    Yellow,
-    Blue,
-    Green,
-    Cyan,
-    Magenta,
-}
 
 /// A color specification for highlighted text.
 ///
@@ -71,10 +120,10 @@ pub enum PresetColor {
 /// ```yaml
 /// color: { r: 181, g: 206, b: 168 }
 /// ```
-#[derive(Debug, Copy, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(untagged)]
 pub enum Color {
-    Preset(PresetColor),
+    Preset{name: String},
     RGB { r: u8, g: u8, b: u8 },
 }
 
@@ -84,17 +133,15 @@ impl Color {
     /// The returned string enables the color when written to a terminal.
     /// Callers are responsible for resetting formatting (e.g. with `\x1b[0m`)
     /// after use.
-    pub fn to_ansi(&self) -> String {
+    pub(crate) fn to_ansi(&self) -> anyhow::Result<String> {
         match self {
-            Color::Preset(p) => match p {
-                PresetColor::Red => "\x1b[31m".to_string(),
-                PresetColor::Yellow => "\x1b[33m".to_string(),
-                PresetColor::Blue => "\x1b[34m".to_string(),
-                PresetColor::Green => "\x1b[32m".to_string(),
-                PresetColor::Cyan => "\x1b[36m".to_string(),
-                PresetColor::Magenta => "\x1b[35m".to_string(),
-            },
-            Color::RGB { r, g, b } => format!("\x1b[38;2;{};{};{}m", r, g, b),
+            Color::Preset { name } => {
+                let preset = PresetColor::parse(name)?;
+                Ok(preset.to_ansi().parse()?)
+            }
+            Color::RGB { r, g, b } => {
+                Ok(format!("\x1b[38;2;{};{};{}m", r, g, b))
+            }
         }
     }
 }

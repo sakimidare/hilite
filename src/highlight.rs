@@ -50,7 +50,7 @@ impl HighlightingEngine {
 
             // 命名捕获组 r{i}
             patterns.push(format!("(?P<r{}>{})", i, pat));
-            ansi_colors.push(rule.color.to_ansi());
+            ansi_colors.push(rule.color.to_ansi()?);
         }
 
         // 2. 编译合并后的正则
@@ -91,10 +91,10 @@ impl HighlightingEngine {
     /// This example is case-insensitive:
     /// ```rust
     /// # use highlite::highlight::HighlightingEngine;
-    /// # use highlite::rules::{Rule, Color, PresetColor};
+    /// # use highlite::rules::{Rule, Color};
     /// let rules = vec![Rule {
     ///     keyword: "Ok".into(),
-    ///     color: Color::Preset(PresetColor::Green),
+    ///     color: Color::Preset{ name: "Green".into() },
     ///     is_regex: false,
     ///     ignore_case: true,
     /// }];
@@ -109,10 +109,10 @@ impl HighlightingEngine {
     /// But this is not:
     /// ```rust
     /// # use highlite::highlight::HighlightingEngine;
-    /// # use highlite::rules::{Rule, Color, PresetColor};
+    /// # use highlite::rules::{Rule, Color};
     /// let rules = vec![Rule {
     ///     keyword: "Ok".into(),
-    ///     color: Color::Preset(PresetColor::Green),
+    ///     color: Color::Preset{ name: "Green".into() },
     ///     is_regex: false,
     ///     ignore_case: false,
     /// }];
@@ -123,7 +123,7 @@ impl HighlightingEngine {
     /// engine.render_line("Status: OK\n", &mut out);
     /// assert!(!out.contains("\x1b[32mOK\x1b[0m"));
     /// ```
-    pub fn render_line(&self, input: &str, output: &mut String) {
+    pub(crate) fn render_line(&self, input: &str, output: &mut String) {
         output.clear();
         let mut last_match = 0;
 

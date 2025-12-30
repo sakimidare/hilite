@@ -36,6 +36,12 @@ pub mod rules;
 /// `include` directives.
 pub mod arg_parser;
 
+//noinspection ALL
+//noinspection ALL
+//noinspection ALL
+//noinspection Annotator
+//noinspection Annotator
+//noinspection Annotator
 /// High-performance text highlighting engine.
 ///
 /// This module compiles all rules into a single regular expression and
@@ -45,12 +51,11 @@ pub mod arg_parser;
 ///
 /// ```rust
 /// use highlite::highlight::HighlightingEngine;
-/// use highlite::rules::{Rule, Color, PresetColor};
-///
+/// use highlite::rules::{Color, Rule};
 /// let rules = vec![
 ///     Rule {
 ///         keyword: "error".into(),
-///         color: Color::Preset(PresetColor::Red),
+///         color: Color::Preset{ name: "Red".into() },
 ///         is_regex: false,
 ///         ignore_case: false,
 ///     },
@@ -67,6 +72,12 @@ pub mod highlight;
 mod preset;
 // --- Main Logic ---
 
+//noinspection ALL
+//noinspection ALL
+//noinspection ALL
+//noinspection Annotator
+//noinspection Annotator
+//noinspection Annotator
 /// Executes the main program logic using the provided CLI configuration.
 ///
 /// This function loads the highlighting rules from the configuration file,
@@ -160,6 +171,17 @@ pub fn run(cli_args: arg_parser::CliArgs) -> anyhow::Result<()> {
 }
 
 
+//noinspection ALL
+//noinspection ALL
+//noinspection ALL
+//noinspection ALL
+//noinspection ALL
+//noinspection ALL
+//noinspection Annotator
+//noinspection Annotator
+//noinspection Annotator
+//noinspection Annotator
+//noinspection Annotator
 /// Processes a buffered input stream and writes highlighted output.
 ///
 /// This function reads input line by line, applies syntax highlighting,
@@ -191,13 +213,19 @@ fn process_stream<R: BufRead, W: Write>(
 #[cfg(test)]
 mod tests {
     use crate::highlight::HighlightingEngine;
-    use crate::rules::{Color, PresetColor, Rule};
+    use crate::rules::{Color, Rule};
 
+    //noinspection ALL
+    //noinspection ALL
+    //noinspection ALL
+    //noinspection Annotator
+    //noinspection Annotator
+    //noinspection Annotator
     #[test]
     fn rule_level_ignore_case_works() {
         let rules = vec![Rule {
             keyword: "error".into(),
-            color: Color::Preset(PresetColor::Red),
+            color: Color::Preset { name: "Red".into() },
             is_regex: false,
             ignore_case: true,
         }];
@@ -209,11 +237,17 @@ mod tests {
         assert!(out.contains("\x1b[31mERROR\x1b[0m"));
     }
 
+    //noinspection ALL
+    //noinspection ALL
+    //noinspection ALL
+    //noinspection Annotator
+    //noinspection Annotator
+    //noinspection Annotator
     #[test]
     fn cli_ignore_case_overrides_rules() {
         let rules = vec![Rule {
             keyword: "error".into(),
-            color: Color::Preset(PresetColor::Red),
+            color: Color::Preset { name: "Red".into() },
             is_regex: false,
             ignore_case: false,
         }];
@@ -225,11 +259,17 @@ mod tests {
         assert!(out.contains("\x1b[31mERROR\x1b[0m"));
     }
 
+    //noinspection ALL
+    //noinspection ALL
+    //noinspection ALL
+    //noinspection Annotator
+    //noinspection Annotator
+    //noinspection Annotator
     #[test]
     fn case_sensitive_rule_does_not_match() {
         let rules = vec![Rule {
             keyword: "error".into(),
-            color: Color::Preset(PresetColor::Red),
+            color: Color::Preset { name: "Red".into() },
             is_regex: false,
             ignore_case: false,
         }];

@@ -1,8 +1,9 @@
+use crate::rules::{Color, Rule};
 use once_cell::sync::Lazy;
-use crate::rules::{Rule, Color, PresetColor};
+use std::convert::Into;
 
 /// JSON 预设
-pub static JSON: Lazy<Vec<Rule>> = Lazy::new(|| vec![
+pub(super) static JSON: Lazy<Vec<Rule>> = Lazy::new(|| vec![
     // ===== Keys =====
     Rule {
         keyword: r#""[^"]+"\s*:"#.to_string(),
@@ -29,6 +30,6 @@ pub static JSON: Lazy<Vec<Rule>> = Lazy::new(|| vec![
         keyword: r"\b(true|false|null)\b".to_string(),
         is_regex: true,
         ignore_case: true,
-        color: Color::Preset(PresetColor::Cyan),
+        color: Color::Preset { name: "Cyan".into() },
     },
 ]);
