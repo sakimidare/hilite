@@ -102,7 +102,7 @@ include:
 
 rules:
   - keyword: "TODO"
-    color: { type: Yellow }
+    color: { name: Yellow }
     ignore_case: true
 
   - keyword: "//.*|/\\*.*\\*/"
@@ -126,22 +126,22 @@ rules:
 
 #### 预设颜色
 ```yaml
-color: { type: Red }
+color: { name: Red }
 ```
 ```yaml
-color: { type: Yellow }
+color: { name: Yellow }
 ```
 ```yaml
-color: { type: Blue }
+color: { name: Blue }
 ```
 ```yaml
-color: { type: Green }
+color: { name: Green }
 ```
 ```yaml
-color: { type: Cyan }
+color: { name: Cyan }
 ```
 ```yaml
-color: { type: Magenta }
+color: { name: Magenta }
 ```
 
 #### RGB 颜色

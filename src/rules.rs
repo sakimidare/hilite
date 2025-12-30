@@ -85,7 +85,7 @@ use serde::Deserialize;
 /// ```yaml
 /// rules:
 ///   - keyword: "ERROR"
-///     color: { type: "Red" }
+///     color: { name: "Red" }
 ///     is_regex: false
 ///   - keyword: "//.*|/\\*.*\\*/"
 ///     is_regex: true
@@ -113,7 +113,7 @@ pub struct Rule {
 /// Using a preset ANSI color:
 ///
 /// ```yaml
-/// color: { type: Red }
+/// color: { name: Red }
 /// ```
 ///
 /// Using a 24-bit RGB value:

@@ -53,22 +53,22 @@ rules:
   - keyword: '\b(ERROR|EE)\b'
     is_regex: true
     ignore_case: true
-    color: { type: Red }
+    color: { name: Red }
 
   - keyword: '\b(WARN(ING)?|WW)\b'
     is_regex: true
     ignore_case: true
-    color: { type: Yellow }
+    color: { name: Yellow }
 
   - keyword: '\b(INFO|II)\b'
     is_regex: true
     ignore_case: true
-    color: { type: Green }
+    color: { name: Green }
 
   - keyword: '\b(DEBUG|DD)\b'
     is_regex: true
     ignore_case: true
-    color: { type: Cyan }
+    color: { name: Cyan }
 
   - keyword: '\b(TRACE|VV)\b'
     is_regex: true

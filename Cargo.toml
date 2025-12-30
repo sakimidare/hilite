@@ -1,9 +1,11 @@
 [package]
 name = "highlite"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2024"
 description = "A fast, rule-based CLI highlighter for stdin and files."
 license = "GPL-3.0-only"
+authors = ["sakimidare"]
+repository = "https://github.com/sakimidare/highlite"
 
 [dependencies]
 clap = { version = "4.5.53", features = ["derive"] }

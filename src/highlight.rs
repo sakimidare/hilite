@@ -80,11 +80,7 @@ impl HighlightingEngine {
         })
     }
 
-
-    /// Renders a single line of input with highlighting applied.
-    ///
-    /// Matched segments are wrapped in ANSI color escape sequences.
-    /// The output buffer is cleared before writing.
+    /// Highlight a single line and return the result.
     ///
     /// # Examples
     ///
@@ -100,9 +96,7 @@ impl HighlightingEngine {
     /// }];
     ///
     /// let engine = HighlightingEngine::new(&rules, false).unwrap();
-    /// let mut out = String::new();
-    ///
-    /// engine.render_line("Status: OK\n", &mut out);
+    /// let out = engine.highlight_line("Status: OK\n");
     /// assert!(out.contains("\x1b[32mOK\x1b[0m"));
     /// ```
     ///
@@ -118,11 +112,19 @@ impl HighlightingEngine {
     /// }];
     ///
     /// let engine = HighlightingEngine::new(&rules, false).unwrap();
-    /// let mut out = String::new();
-    ///
-    /// engine.render_line("Status: OK\n", &mut out);
+    /// let out = engine.highlight_line("Status: OK\n");
     /// assert!(!out.contains("\x1b[32mOK\x1b[0m"));
     /// ```
+    pub fn highlight_line(&self, input: &str) -> String {
+        let mut out = String::with_capacity(input.len() + 16);
+        self.render_line(input, &mut out);
+        out
+    }
+
+    /// Renders a single line of input with highlighting applied.
+    ///
+    /// Matched segments are wrapped in ANSI color escape sequences.
+    /// The output buffer is cleared before writing.
     pub(crate) fn render_line(&self, input: &str, output: &mut String) {
         output.clear();
         let mut last_match = 0;

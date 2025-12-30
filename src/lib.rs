@@ -36,12 +36,6 @@ pub mod rules;
 /// `include` directives.
 pub mod arg_parser;
 
-//noinspection ALL
-//noinspection ALL
-//noinspection ALL
-//noinspection Annotator
-//noinspection Annotator
-//noinspection Annotator
 /// High-performance text highlighting engine.
 ///
 /// This module compiles all rules into a single regular expression and
@@ -63,21 +57,13 @@ pub mod arg_parser;
 ///
 /// let engine = HighlightingEngine::new(&rules, true).unwrap();
 ///
-/// let mut out = String::new();
-/// engine.render_line("An error occurred\n", &mut out);
+/// let out = engine.highlight_line("An error occurred\n");
 ///
 /// assert!(out.contains("\x1b[31m"));
 /// ```
 pub mod highlight;
 mod preset;
-// --- Main Logic ---
 
-//noinspection ALL
-//noinspection ALL
-//noinspection ALL
-//noinspection Annotator
-//noinspection Annotator
-//noinspection Annotator
 /// Executes the main program logic using the provided CLI configuration.
 ///
 /// This function loads the highlighting rules from the configuration file,
@@ -170,18 +156,6 @@ pub fn run(cli_args: arg_parser::CliArgs) -> anyhow::Result<()> {
     Ok(())
 }
 
-
-//noinspection ALL
-//noinspection ALL
-//noinspection ALL
-//noinspection ALL
-//noinspection ALL
-//noinspection ALL
-//noinspection Annotator
-//noinspection Annotator
-//noinspection Annotator
-//noinspection Annotator
-//noinspection Annotator
 /// Processes a buffered input stream and writes highlighted output.
 ///
 /// This function reads input line by line, applies syntax highlighting,
@@ -215,12 +189,6 @@ mod tests {
     use crate::highlight::HighlightingEngine;
     use crate::rules::{Color, Rule};
 
-    //noinspection ALL
-    //noinspection ALL
-    //noinspection ALL
-    //noinspection Annotator
-    //noinspection Annotator
-    //noinspection Annotator
     #[test]
     fn rule_level_ignore_case_works() {
         let rules = vec![Rule {
@@ -237,12 +205,6 @@ mod tests {
         assert!(out.contains("\x1b[31mERROR\x1b[0m"));
     }
 
-    //noinspection ALL
-    //noinspection ALL
-    //noinspection ALL
-    //noinspection Annotator
-    //noinspection Annotator
-    //noinspection Annotator
     #[test]
     fn cli_ignore_case_overrides_rules() {
         let rules = vec![Rule {
@@ -259,12 +221,6 @@ mod tests {
         assert!(out.contains("\x1b[31mERROR\x1b[0m"));
     }
 
-    //noinspection ALL
-    //noinspection ALL
-    //noinspection ALL
-    //noinspection Annotator
-    //noinspection Annotator
-    //noinspection Annotator
     #[test]
     fn case_sensitive_rule_does_not_match() {
         let rules = vec![Rule {
